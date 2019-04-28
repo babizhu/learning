@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper:根标签，namespace：命名空间，随便写，一般保证命名空间唯一 -->
+<mapper namespace="com.bbz.learning.mybatis.mapper.UserMapper">
+
+    <!-- statement，内容：sql语句。id：唯一标识，随便写，在同一个命名空间下保持唯一
+       resultType：sql语句查询结果集的封装类型,tb_user即为数据库中的表
+     -->
+    <!--<select id="queryUserById" resultType="com.bbz.learning.mybatis.dto.User">-->
+    <!--select * from tb_user where id = #{id}-->
+    <!--</select>-->
+
+    <!--使用别名-->
+    <select id="queryUserById" resultType="User">
+      select
+       user.id as id,
+       user.name as name,
+       user.age as age,
+       user.password as password,
+       user.birthday as birthday,
+       user.sex as sex,
+       user.updated
+       from
+       user
+       where id = #{id};
+   </select>
+
+    <select id="queryUserAll" resultType="User">
+        select * from user;
+    </select>
+
+    <!-- 新增的Statement
+       id：唯一标识，随便写，在同一个命名空间下保持唯一，使用动态代理之后要求和方法名保持一致
+       parameterType：参数的类型，使用动态代理之后和方法的参数类型一致
+       useGeneratedKeys:开启主键回写
+       keyColumn：指定数据库的主键
+       keyProperty：主键对应的pojo属性名
+     -->
+    <insert id="insertUser" parameterType="User"
+    useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO user (
+        password,
+        name,
+        age,
+        sex,
+        birthday,
+        updated
+        )
+        VALUES
+        (
+
+        #{password},
+        #{name},
+        #{age},
+        #{sex},
+        #{birthday},
+        #{updated}
+        );
+    </insert>
+
+    <update id="updateUser" parameterType="User">
+        UPDATE user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="password!=null">password = #{password},</if>
+            <if test="name!=null">name = #{name},</if>
+            <if test="age!=null">age = #{age},</if>
+            <if test="sex!=null">sex = #{sex},</if>
+            <if test="birthday!=null">birthday = #{birthday},</if>
+            updated = now(),
+        </trim>
+        WHERE
+        (id = #{id});
+    </update>
+
+    <delete id="deleteUser">
+        delete from user where id=#{id}
+    </delete>
+</mapper>
