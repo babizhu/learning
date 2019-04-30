@@ -4,6 +4,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- mapper:根标签，namespace：命名空间，随便写，一般保证命名空间唯一 -->
 <mapper namespace="com.bbz.learning.mybatis.mapper.UserMapper">
+    <sql id="userField">
+		user.id as id,
+       user.name as name,
+       user.name as secondName,
+       user.age as age,
+       user.password as password,
+       user.birthday as birthday,
+       user.sex as sex,
+       user.updated
+    </sql>
+    <resultMap id="resultLoginRecord" type="LoginRecord" autoMapping="true">
+
+    </resultMap>
 
     <!-- statement，内容：sql语句。id：唯一标识，随便写，在同一个命名空间下保持唯一
        resultType：sql语句查询结果集的封装类型,tb_user即为数据库中的表
@@ -14,22 +27,35 @@
 
     <!--使用别名-->
     <select id="queryUserById" resultType="User">
-      select
-       user.id as id,
-       user.name as name,
-       user.age as age,
-       user.password as password,
-       user.birthday as birthday,
-       user.sex as sex,
-       user.updated
-       from
-       user
-       where id = #{id};
-   </select>
+        select
+        <include refid="userField"/>
+        from
+        user
+        where id = #{id};
+    </select>
 
     <select id="queryUserAll" resultType="User">
-        select * from user;
+        select
+        <include refid="userField"/>
+        from user;
     </select>
+
+    <!--返回一个map，key为id-->
+    <select id="queryUserAllMap" resultType="User">
+        select
+        <include refid="userField"/>
+        from user;
+    </select>
+
+    <select id="queryUserList" resultType="User">
+        select
+        <include refid="userField"/>
+        from user where sex = 1
+        <if test="name!=null and name.trim()!=''">
+            and name like '%${name}%'
+        </if>
+    </select>
+
 
     <!-- 新增的Statement
        id：唯一标识，随便写，在同一个命名空间下保持唯一，使用动态代理之后要求和方法名保持一致
@@ -39,24 +65,24 @@
        keyProperty：主键对应的pojo属性名
      -->
     <insert id="insertUser" parameterType="User"
-    useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+            useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         INSERT INTO user (
-        password,
-        name,
-        age,
-        sex,
-        birthday,
-        updated
+            password,
+            name,
+            age,
+            sex,
+            birthday,
+            updated
         )
         VALUES
         (
 
-        #{password},
-        #{name},
-        #{age},
-        #{sex},
-        #{birthday},
-        #{updated}
+            #{password},
+            #{name},
+            #{age},
+            #{sex},
+            #{birthday},
+            #{updated}
         );
     </insert>
 
@@ -68,7 +94,7 @@
             <if test="age!=null">age = #{age},</if>
             <if test="sex!=null">sex = #{sex},</if>
             <if test="birthday!=null">birthday = #{birthday},</if>
-            updated = now(),
+            updated=#{updated}
         </trim>
         WHERE
         (id = #{id});
@@ -77,4 +103,23 @@
     <delete id="deleteUser">
         delete from user where id=#{id}
     </delete>
+
+    <select id="query" resultType="User">
+        select
+        <include refid="userField"/>
+        from
+        user
+        <!--如果多出一个and，会自动去除，如果缺少and或者多出多个and则会报错-->
+        <where>
+            <if test="name!=null and name.trim()!=''">
+                and name like '%${name}%'
+            </if>
+            <if test="age!=null">
+                and age = #{age}
+            </if>
+            <if test="sex!=null">
+                and sex = #{sex}
+            </if>
+        </where>
+    </select>
 </mapper>

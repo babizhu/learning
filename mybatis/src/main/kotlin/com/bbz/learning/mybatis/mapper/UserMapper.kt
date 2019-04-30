@@ -1,6 +1,11 @@
 package com.bbz.learning.mybatis.mapper
 
 import com.bbz.learning.mybatis.dto.User
+import com.bbz.learning.mybatis.dto.UserCondition
+import org.apache.ibatis.annotations.MapKey
+import org.apache.ibatis.annotations.Param
+
+
 
 
 interface UserMapper {
@@ -19,6 +24,8 @@ interface UserMapper {
      */
     fun queryUserAll(): List<User>
 
+    @MapKey("id")
+    fun queryUserAllMap():Map<Int,User>
     /**
      * 新增用户
      *
@@ -39,4 +46,18 @@ interface UserMapper {
      * @param id
      */
     fun deleteUser(id: String)
+
+    /**
+     * 动态查询
+     * 查询男性用户
+     * 如果输入了姓名，则where子句中增加姓名查询条件
+     */
+
+    fun queryUserList(@Param("name") name: String?):List<User>
+
+    /**
+     * 动态查询，条件组合
+     */
+    @MapKey("id")
+    fun query(condition: UserCondition):Map<Int,User>
 }

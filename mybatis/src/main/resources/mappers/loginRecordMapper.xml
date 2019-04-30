@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper:根标签，namespace：命名空间，随便写，一般保证命名空间唯一 -->
+<mapper namespace="com.bbz.learning.mybatis.mapper.LoginRecordMapper">
+
+    <resultMap id="resultLoginRecord" type="LoginRecord" autoMapping="true">
+        <id column="id" property="id"/>
+        <id column="user_name" property="userName"/>
+        <id column="login_date" property="loginDate"/>
+        <id column="login_result" property="loginResult"/>
+
+    </resultMap>
+
+    <!-- statement，内容：sql语句。id：唯一标识，随便写，在同一个命名空间下保持唯一
+       resultType：sql语句查询结果集的封装类型,tb_user即为数据库中的表
+     -->
+
+    <!--使用resultMap-->
+    <select id="queryById" resultMap="resultLoginRecord">
+      select id,user_name,login_date,login_result from login_record where id = #{id};
+   </select>
+
+    <select id="queryAll" resultMap="resultLoginRecord">
+        select * from login_record;
+    </select>
+
+    <select id="queryAllMap" resultMap="resultLoginRecord">
+    <!--<select id="queryAllMap" resultType="Map"> 这样会出问题-->
+             select * from login_record;
+         </select>
+
+</mapper>

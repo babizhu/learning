@@ -21,5 +21,22 @@ package com.bbz.learning.mybatis;
  *      2）然后根据 properties 元素中的 resource 属性读取类路径下属性文件或根据 url 属性指定的路径读取属性文件，并覆盖已读取的同名属性。
  *      3）最后读取作为方法参数传递的属性，并覆盖已读取的同名属性。
  *
+ * Q: #{}多个参数时
+ * A: #{0},#{1},来进行占位，或者使用在方法中使用@Param("userName")来向mapper文件中传递#{userName}参数，比如：
+ *      public User login(@Param("userName") String userName, @Param("password") String password);
+ *
+ *      <select id="login" resultType="com.zpc.mybatis.pojo.User">
+ *          select * from tb_user where user_name = #{userName} and password = #{password}
+ *      </select>
+ *
+ *  Q: 如何返回一个Hashmap
+ *  A:
+ *      1、在接口的方法上，指名key
+ *          @MapKey("id")
+ *          fun queryAllMap(): Map<Int, LoginRecord>
+ *      2、在xml中
+ *          <select id="queryAllMap" resultMap="resultLoginRecord"> 详见 mappers/loginRecordMapper.xml
+ *
+ *
  */
 

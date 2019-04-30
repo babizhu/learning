@@ -4,6 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <!-- 根标签 -->
 <configuration>
+
     <properties>
         <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
         <property name="url"
@@ -11,7 +12,10 @@
         <property name="username" value="root"/>
         <property name="password" value="123456"/>
     </properties>
-
+    <settings>
+        <!-- 打印查询语句 -->
+        <setting name="logImpl" value="STDOUT_LOGGING" />
+    </settings>
     <typeAliases>
         <!--type:实体类的全路径。alias:别名，通常首字母大写-->
         <!--<typeAlias type="com.zpc.mybatis.pojo.User" alias="User"/>-->
@@ -43,7 +47,12 @@
             </dataSource>
         </environment>
     </environments>
+    <!--<plugins>-->
+        <!--<plugin interceptor="com.bbz.learning.mybatis.plugin.ExamplePlugin"></plugin>-->
+    <!--</plugins>-->
     <mappers>
         <mapper resource="mappers/userMapper.xml" />
+        <mapper resource="mappers/loginRecordMapper.xml" />
+        <mapper resource="mappers/OrderMapper.xml" />
     </mappers>
 </configuration>
