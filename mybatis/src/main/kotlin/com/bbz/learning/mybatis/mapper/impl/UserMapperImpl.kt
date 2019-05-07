@@ -7,6 +7,10 @@ import org.apache.ibatis.session.SqlSession
 
 
 class UserMapperImpl(private val sqlSession: SqlSession) : UserMapper {
+    override fun queryUserById(id: String): User {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun query(condition: UserCondition): Map<Int, User> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -20,7 +24,7 @@ class UserMapperImpl(private val sqlSession: SqlSession) : UserMapper {
     }
 
     override fun queryUserById(id: Int): User {
-        return this.sqlSession.selectOne("UserMapper.queryUserById", id)
+        return this.sqlSession.selectOne("queryUserById", id)
     }
 
     override fun queryUserAll(): List<User> {
@@ -28,7 +32,7 @@ class UserMapperImpl(private val sqlSession: SqlSession) : UserMapper {
     }
 
     override fun insertUser(user: User) {
-        this.sqlSession.insert("UserMapper.insertUser", user)
+        this.sqlSession.insert("insertUser", user)
     }
 
     override fun updateUser(user: User) {

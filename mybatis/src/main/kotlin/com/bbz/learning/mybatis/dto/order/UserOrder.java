@@ -9,10 +9,10 @@ import com.bbz.learning.mybatis.dto.User;
 import java.util.Date;
 //
 public class UserOrder {
-    private Integer orderId;
+    private Integer id;
     private Long userId;
     private String orderNumber;
-    private Date orderCreated;
-    private Date orderUpdated;
+    private Date created;
+    private Date updated;
     private User user;
 }

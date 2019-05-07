@@ -37,6 +37,9 @@ package com.bbz.learning.mybatis;
  *      2、在xml中
  *          <select id="queryAllMap" resultMap="resultLoginRecord"> 详见 mappers/loginRecordMapper.xml
  *
+ * 大坑
+ *      两个表联合查询大时候，sql语句当中千万不要存在相同的字段名例如o.id,u.id之类的，虽然在sql层面已经做了区分，但是mybatis区分不了，
+ *      都是id。这样会出一些莫名其妙的问题
  *
  */
 

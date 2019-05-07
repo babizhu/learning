@@ -2,6 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <!-- mapper:根标签，namespace：命名空间，随便写，一般保证命名空间唯一 -->
 <mapper namespace="com.bbz.learning.mybatis.mapper.UserMapper">
     <sql id="userField">
@@ -14,9 +15,10 @@
        user.sex as sex,
        user.updated
     </sql>
-    <resultMap id="resultLoginRecord" type="LoginRecord" autoMapping="true">
+<!--    -->
+<!--    <resultMap id="resultLoginRecord" type="LoginRecord" autoMapping="true">-->
 
-    </resultMap>
+<!--    </resultMap>-->
 
     <!-- statement，内容：sql语句。id：唯一标识，随便写，在同一个命名空间下保持唯一
        resultType：sql语句查询结果集的封装类型,tb_user即为数据库中的表
@@ -26,13 +28,14 @@
     <!--</select>-->
 
     <!--使用别名-->
-    <select id="queryUserById" resultType="User">
+    <select id="queryUserById" resultType="User" parameterType="Integer">
         select
         <include refid="userField"/>
         from
         user
-        where id = #{id};
+        where id = #{id}
     </select>
+
 
     <select id="queryUserAll" resultType="User">
         select
@@ -48,12 +51,13 @@
     </select>
 
     <select id="queryUserList" resultType="User">
+        <bind name="pattern" value="'%' + name + '%'" />
         select
         <include refid="userField"/>
         from user where sex = 1
         <if test="name!=null and name.trim()!=''">
-            and name like '%${name}%'
-        </if>
+        and name like #{pattern}
+    </if>
     </select>
 
 
@@ -64,8 +68,7 @@
        keyColumn：指定数据库的主键
        keyProperty：主键对应的pojo属性名
      -->
-    <insert id="insertUser" parameterType="User"
-            useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+    <insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         INSERT INTO user (
             password,
             name,
@@ -86,7 +89,7 @@
         );
     </insert>
 
-    <update id="updateUser" parameterType="User">
+    <update id="updateUser">
         UPDATE user
         <trim prefix="set" suffixOverrides=",">
             <if test="password!=null">password = #{password},</if>
@@ -103,6 +106,7 @@
     <delete id="deleteUser">
         delete from user where id=#{id}
     </delete>
+
 
     <select id="query" resultType="User">
         select

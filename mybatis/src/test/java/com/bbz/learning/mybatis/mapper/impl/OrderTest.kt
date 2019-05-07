@@ -5,6 +5,7 @@ import com.bbz.learning.mybatis.dto.UserCondition
 import com.bbz.learning.mybatis.mapper.OrderMapper
 import com.bbz.learning.mybatis.mapper.UserMapper
 import org.apache.ibatis.io.Resources
+import org.apache.ibatis.reflection.Reflector
 import org.apache.ibatis.session.SqlSessionFactoryBuilder
 import org.junit.Before
 import org.junit.Test
@@ -44,5 +45,20 @@ class OrderTest {
         val userOrder = orderMapper.queryOrderWithUserByOrderNumber("201807010001")
         println(userOrder)
     }
+
+    @Test
+    fun reflector() {
+        val reflector = Reflector(User::class.java)
+        val defaultConstructor = reflector.defaultConstructor
+        reflector.getablePropertyNames.forEach { println(it) }
+        println(reflector.type)
+        println(defaultConstructor)
+//        reflector.
+        val user = defaultConstructor.newInstance() as User
+        user.name = "dddd"
+        println(user)
+
+    }
+
 
 }

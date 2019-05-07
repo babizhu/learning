@@ -32,19 +32,7 @@
     </resultMap>
     <select id="queryOrderWithUserByOrderNumber" resultMap="UserOrderResultMap">
         select
-        o.id as orderId,
-        user_id as userId,
-        order_number as orderNumber,
-        o.created as orderCreated,
-        o.updated as orderUpdated,
-        u.id as id,
-        u.name as secondName,
-        u.name as name,
-        u.age as age,
-        u.password as password,
-        u.birthday as birthday,
-        u.sex as sex,
-        u.updated
+        o.*,u.name
         from tb_order o left join user u on o.user_id=u.id
         where o.order_number = #{orderNo}
     </select>

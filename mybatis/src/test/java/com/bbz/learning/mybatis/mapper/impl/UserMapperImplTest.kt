@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder
 import org.junit.Before
 import org.junit.Test
 import java.text.SimpleDateFormat
+import java.util.*
 
 
 class UserMapperImplTest {
@@ -47,22 +48,25 @@ class UserMapperImplTest {
 
     @Test
     fun queryUserAllMap() {
-        println(this.userMapper.queryUserAllMap()[1]!!::class.java.name)
+        println(this.userMapper.queryUserAllMap())
     }
 
     @Test
     fun insertUser() {
         val user = User(id = null,
                 age = 17, birthday = SimpleDateFormat("yyyy/MM/dd").parse("1990/09/02"),
-                name = "刘睿睿",
-                password = "111",
-                sex = 1
+                name = "xy",
+                sex = 1,
+                updated = System.currentTimeMillis()
         )
         println(user)
         println("===============插入后，注意看id属性已经赋值===============")
         userMapper.insertUser(user)
-        this.sqlSession.commit()
+//        this.sqlSession.commit()
         println(user)
+        sqlSession.close()
+
+
 
 
     }
@@ -74,7 +78,8 @@ class UserMapperImplTest {
         println("===============修改后，注意age+1，updated也变了===============")
         user.password = "assd"
         user.updated = System.currentTimeMillis()
-//        user.age?.let { it } += 1
+        var age = user.age ?: 0
+        user.age = age + 1
 
         this.userMapper.updateUser(user)
         this.sqlSession.commit()
@@ -91,9 +96,14 @@ class UserMapperImplTest {
     }
 
 
+    /**
+     * 如何利用#{}来传递like的值
+     */
     @Test
     fun queryUserList() {
-        val users = this.userMapper.queryUserList("呦呦")
+
+        val name = "呦呦"
+        val users = this.userMapper.queryUserList("%$name%")
         for (user in users) {
             println(user)
         }

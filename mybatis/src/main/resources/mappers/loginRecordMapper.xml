@@ -26,6 +26,7 @@
         select * from login_record;
     </select>
 
+
     <select id="queryAllMap" resultMap="resultLoginRecord">
     <!--<select id="queryAllMap" resultType="Map"> 这样会出问题-->
              select * from login_record;

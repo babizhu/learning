@@ -36,7 +36,9 @@ class LoginRecordMapperTest {
 //
     @Test
     fun queryAll() {
-        println(loginRecordMapper.queryAll())
+    loginRecordMapper.foo()
+
+    println(loginRecordMapper.queryAll())
     }
 
     @Test
