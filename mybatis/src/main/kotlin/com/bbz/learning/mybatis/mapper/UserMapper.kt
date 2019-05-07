@@ -15,7 +15,7 @@ interface UserMapper {
      * @param id
      * @return
      */
-    fun queryUserById(id: String): User
+//    fun queryUserById(id: String): User
     fun queryUserById(id: Int): User
 
     /**

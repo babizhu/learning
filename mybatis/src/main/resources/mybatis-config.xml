@@ -54,6 +54,6 @@
     <mappers>
         <mapper resource="mappers/userMapper.xml" />
         <mapper resource="mappers/loginRecordMapper.xml" />
-        <mapper resource="mappers/OrderMapper.xml" />
+        <mapper resource="mappers/orderMapper.xml" />
     </mappers>
 </configuration>

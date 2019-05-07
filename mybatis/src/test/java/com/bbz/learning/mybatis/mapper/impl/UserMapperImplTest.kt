@@ -54,7 +54,7 @@ class UserMapperImplTest {
     @Test
     fun insertUser() {
         val user = User(id = null,
-                age = 17, birthday = SimpleDateFormat("yyyy/MM/dd").parse("1990/09/02"),
+                age =Random().nextInt(100), birthday = SimpleDateFormat("yyyy/MM/dd").parse("1990/09/02"),
                 name = "xy",
                 sex = 1,
                 updated = System.currentTimeMillis()
@@ -64,7 +64,12 @@ class UserMapperImplTest {
         userMapper.insertUser(user)
 //        this.sqlSession.commit()
         println(user)
-        sqlSession.close()
+
+        user.id?.let {
+            println("user is ${userMapper.queryUserById(it)}")
+        }
+
+//        sqlSession.close()
 
 
 
